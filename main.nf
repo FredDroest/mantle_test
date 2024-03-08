@@ -41,11 +41,9 @@ process MANTLE_UPLOAD_RESULTS {
     tuple val(pipeline_run_id), path('*.txt'), emit: completion_timestamp
 
     script:
-    def file = new File(outdir)
-    absolutePath = file.getAbsolutePath().toString()
 
     """
-    mantle_upload_results.py ${pipeline_run_id} ${absolutePath}
+    mantle_upload_results.py ${pipeline_run_id} ${outdir}
 
     date > results_uploaded_mantle.txt
     """
