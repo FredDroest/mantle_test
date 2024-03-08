@@ -19,9 +19,7 @@ process MANTLE_STAGE_INPUTS {
     """
     test.sh
     
-    get_data.py ${pipeline_run_id} ${stage_directory} \
-        --mantle_env ${ENVIRONMENT} \
-        --tenant ${TENANT}
+    get_data.py ${pipeline_run_id} ${stage_directory}
     """
 }
 
@@ -47,9 +45,7 @@ process MANTLE_UPLOAD_RESULTS {
     absolutePath = file.getAbsolutePath().toString()
 
     """
-    mantle_upload_results.py ${pipeline_run_id} ${absolutePath} \
-        --mantle_env ${ENVIRONMENT} \
-        --tenant ${TENANT}
+    mantle_upload_results.py ${pipeline_run_id} ${absolutePath}
 
     date > results_uploaded_mantle.txt
     """
