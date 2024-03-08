@@ -1,9 +1,3 @@
-params.READS = file(params.reads)
-
-// Add echo statements to debug
-println "Executing map2genome.sh with the following parameters:"
-println "READS: ${params.READS}"
-
 
 process MANTLE_STAGE_INPUTS {
     tag "${pipelineId}-mantleSDK_stageInputs"
@@ -23,6 +17,8 @@ process MANTLE_STAGE_INPUTS {
     def stage_directory = "./"
 
     """
+    test.sh
+    
     get_data.py ${pipelineId} ${stage_directory} \
         --mantle_env ${ENVIRONMENT} \
         --tenant ${TENANT}
