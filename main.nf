@@ -67,7 +67,7 @@ workflow {
     // Sync outputs back into mantle
     MANTLE_UPLOAD_RESULTS (
         params.pipeline_run_id,
-        test_ch,
+        MANTLE_STAGE_INPUTS.test_ch,
         params.outdir
     )
 }
