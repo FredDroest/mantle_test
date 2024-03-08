@@ -37,7 +37,6 @@ process MANTLE_UPLOAD_RESULTS {
 
     input:
     val pipeline_run_id
-    val test_ch
     path outdir, stageAs: 'results/*'
 
     output:
@@ -67,7 +66,6 @@ workflow {
     // Sync outputs back into mantle
     MANTLE_UPLOAD_RESULTS (
         params.pipeline_run_id,
-        MANTLE_STAGE_INPUTS.test_ch,
         params.outdir
     )
 }
