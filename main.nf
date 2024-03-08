@@ -8,10 +8,10 @@ process MANTLE_STAGE_INPUTS {
     container 'mantle-cli-tool:latest'
 
     input:
-    val pipelineId
+    val pipeline_run_id
 
     output:
-    tuple val(pipelineId), path('*R1*.fastq.gz'), path('*R2*.fastq.gz'), emit: staged_fastqs
+    tuple val(pipeline_run_id), path('*R1*.fastq.gz'), path('*R2*.fastq.gz'), emit: staged_fastqs
 
     script:
     def stage_directory = "./"
@@ -36,7 +36,7 @@ process MANTLE_UPLOAD_RESULTS {
     container 'mantle-cli-tool:latest'
 
     input:
-    val pipelineId
+    val pipeline_run_id
     val _fastqc_completion_ch
     val test_ch
     path outdir, stageAs: 'results/*'
@@ -49,7 +49,7 @@ process MANTLE_UPLOAD_RESULTS {
     absolutePath = file.getAbsolutePath().toString()
 
     """
-    mantle_upload_results.py ${pipelineId} ${absolutePath} \
+    mantle_upload_results.py ${pipeline_run_id} ${absolutePath} \
         --mantle_env ${ENVIRONMENT} \
         --tenant ${TENANT}
 
@@ -60,14 +60,14 @@ process MANTLE_UPLOAD_RESULTS {
 workflow {
      // Get FatsQs and sample metadata using pipeline Run ID from mantle SDK
     MANTLE_STAGE_INPUTS (
-        params.pipelineId
+        params.pipeline_run_id
     )
 
     // ... add your pipeline modules here...
 
     // Sync outputs back into mantle
     MANTLE_UPLOAD_RESULTS (
-        params.pipelineId,
+        params.pipeline_run_id,
         // Add all files that you want to register as outputs here
         params.outdir
     )
