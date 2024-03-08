@@ -1,6 +1,6 @@
 
 process MANTLE_STAGE_INPUTS {
-    tag "${pipelineId}-mantleSDK_stageInputs"
+    tag "${pipeline_run_id}-mantleSDK_stageInputs"
 
     secret 'MANTLE_USER'
     secret 'MANTLE_PASSWORD'
@@ -19,14 +19,14 @@ process MANTLE_STAGE_INPUTS {
     """
     test.sh
     
-    get_data.py ${pipelineId} ${stage_directory} \
+    get_data.py ${pipeline_run_id} ${stage_directory} \
         --mantle_env ${ENVIRONMENT} \
         --tenant ${TENANT}
     """
 }
 
 process MANTLE_UPLOAD_RESULTS {
-    tag "${pipelineId}-mantleSDK_uploadResults"
+    tag "${pipeline_run_id}-mantleSDK_uploadResults"
 
     publishDir "${params.outdir}/mantle_upload_results", mode: 'copy'
 
@@ -42,7 +42,7 @@ process MANTLE_UPLOAD_RESULTS {
     path outdir, stageAs: 'results/*'
 
     output:
-    tuple val(pipelineId), path('*.txt'), emit: completion_timestamp
+    tuple val(pipeline_run_id), path('*.txt'), emit: completion_timestamp
 
     script:
     def file = new File(outdir)
