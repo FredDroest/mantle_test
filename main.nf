@@ -11,7 +11,7 @@ process MANTLE_STAGE_INPUTS {
     val pipeline_run_id
 
     output:
-    tuple val(pipeline_run_id), path('*R1*.fastq.gz'), path('*R2*.fastq.gz'), emit: staged_fastqs
+    path('*.fastq.gz'), emit: test_ch
 
     script:
     def stage_directory = "./"
@@ -37,7 +37,6 @@ process MANTLE_UPLOAD_RESULTS {
 
     input:
     val pipeline_run_id
-    val _fastqc_completion_ch
     val test_ch
     path outdir, stageAs: 'results/*'
 
@@ -68,7 +67,7 @@ workflow {
     // Sync outputs back into mantle
     MANTLE_UPLOAD_RESULTS (
         params.pipeline_run_id,
-        // Add all files that you want to register as outputs here
+        test_ch,
         params.outdir
     )
 }
